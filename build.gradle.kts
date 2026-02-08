@@ -4,7 +4,7 @@ plugins {
     id("io.ia.sdk.modl") version "0.4.0" apply false
 }
 
-group = "com.openclaw.ignition"
+group = "com.inductiveautomation.mtconnect"
 version = property("moduleVersion") as String
 
 allprojects {

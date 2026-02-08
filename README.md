@@ -29,12 +29,14 @@ Ignition tags via a managed tag provider.
 - The status UI shows observed vs total tags to help validate data coverage.
 
 ### Development
+Requires JDK 17.
+
 Build:
 ```
 ./gradlew clean :mtconnect-build:build
 ```
 
-Run tests (if added later):
+Run tests (none currently):
 ```
 ./gradlew test
 ```
@@ -42,3 +44,9 @@ Run tests (if added later):
 ### Release (GitHub Actions)
 - Push a tag like `v0.1.0` to publish a release with the `.modl` artifact.
 - Workflows are in `.github/workflows`.
+
+### Contributing
+See `CONTRIBUTING.md`.
+
+### License
+Licensed under the MIT License. See `LICENSE`.

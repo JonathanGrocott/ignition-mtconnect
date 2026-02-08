@@ -20,7 +20,7 @@ ignitionModule {
             ":mtconnect-gateway" to "G"
         )
     )
-    hooks.set(mapOf("com.openclaw.ignition.mtconnect.gateway.GatewayHook" to "G"))
+    hooks.set(mapOf("com.inductiveautomation.mtconnect.gateway.GatewayHook" to "G"))
     skipModlSigning.set(true)
 }
 
@@ -54,7 +54,7 @@ tasks.named("writeModuleXml") {
             append("\t\t<description>MTConnect integration for Ignition 8.3</description>\n")
             append("\t\t<requiredIgnitionVersion>").append(ignitionVersion).append("</requiredIgnitionVersion>\n")
             append("\t\t<freeModule>false</freeModule>\n")
-            append("\t\t<hook scope=\"G\">com.openclaw.ignition.mtconnect.gateway.GatewayHook</hook>\n")
+            append("\t\t<hook scope=\"G\">com.inductiveautomation.mtconnect.gateway.GatewayHook</hook>\n")
             append("\t\t<requiredFrameworkVersion>8</requiredFrameworkVersion>\n")
 
             jarFiles.forEach { jarName ->
