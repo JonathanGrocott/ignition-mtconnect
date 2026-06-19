@@ -4,3 +4,12 @@ build/
 *.iml
 .idea/
 .DS_Store
+
+# Module signing certificates, keystores, and downloaded signing tools
+certs/*
+!certs/README.md
+*.jks
+*.keystore
+*.p12
+*.p7b
+tools/module-signer/

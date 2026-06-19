@@ -31,9 +31,19 @@ jobs:
     - name: Build module
       run: ./gradlew clean :mtconnect-build:build
 
+    - name: Sign module
+      run: ./scripts/sign-module.sh
+
+    - name: Verify signed module
+      run: |
+        unzip -l mtconnect-build/build/mtconnect.modl | grep -q "certificates.p7b"
+        unzip -l mtconnect-build/build/mtconnect.modl | grep -q "signatures.properties"
+
     - name: Upload module artifact
       uses: actions/upload-artifact@v4
       with:
         name: mtconnect-module
-        path: mtconnect-build/build/*.modl
+        path: |
+          mtconnect-build/build/*.modl
+          !mtconnect-build/build/*.unsigned.modl
         retention-days: 30

@@ -12,7 +12,8 @@ Ignition tags via a managed tag provider.
 
 ### Installation
 1. Build the module locally with `./gradlew clean :mtconnect-build:build`.
-2. Install the generated `.modl` from `mtconnect-build/build/` in the Ignition Gateway.
+2. Sign the generated module with `./scripts/sign-module.sh`.
+3. Install the signed `.modl` from `mtconnect-build/build/` in the Ignition Gateway.
 
 ### Configuration
 1. Go to Connections > MTConnect > Connections.
@@ -34,6 +35,14 @@ Requires JDK 17.
 Build:
 ```
 ./gradlew clean :mtconnect-build:build
+./scripts/sign-module.sh
+```
+
+The Gradle build creates `mtconnect-build/build/mtconnect.unsigned.modl`; the signing script creates `mtconnect-build/build/mtconnect.modl`. If signing material does not exist yet, the script creates a simple self-signed certificate under `certs/`; those files are ignored by git. Keep the same generated files if you want future builds to use the same certificate, so Ignition users only need to accept that certificate once.
+
+Verify the module contains the signing payload:
+```
+unzip -l mtconnect-build/build/mtconnect.modl | grep -E 'certificates.p7b|signatures.properties'
 ```
 
 Run tests (none currently):
@@ -42,7 +51,7 @@ Run tests (none currently):
 ```
 
 ### Release (GitHub Actions)
-- Push a tag like `v0.1.0` to publish a release with the `.modl` artifact.
+- Push a tag like `v0.1.2` to publish a release with the signed `.modl` artifact.
 - Workflows are in `.github/workflows`.
 
 ### Contributing

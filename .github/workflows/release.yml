@@ -34,6 +34,9 @@ jobs:
     - name: Build module
       run: ./gradlew clean :mtconnect-build:build
 
+    - name: Sign module
+      run: ./scripts/sign-module.sh
+
     - name: Get version from gradle.properties
       id: get_version
       run: |
@@ -41,10 +44,22 @@ jobs:
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "Module version: $VERSION"
 
+    - name: Verify tag matches module version
+      if: github.ref_type == 'tag'
+      run: |
+        EXPECTED_TAG="v$VERSION"
+        if [ "$GITHUB_REF_NAME" != "$EXPECTED_TAG" ]; then
+          echo "Tag $GITHUB_REF_NAME does not match module version $VERSION; expected $EXPECTED_TAG" >&2
+          exit 1
+        fi
+
     - name: Find .modl file
       id: find_modl
       run: |
-        MODL_FILE=$(find mtconnect-build/build -name "*.unsigned.modl" -type f | head -1)
+        MODL_FILE=$(find mtconnect-build/build -name "*.modl" ! -name "*.unsigned.modl" -type f | head -1)
+        test -n "$MODL_FILE"
+        unzip -l "$MODL_FILE" | grep -q "certificates.p7b"
+        unzip -l "$MODL_FILE" | grep -q "signatures.properties"
         echo "MODL_FILE=$MODL_FILE" >> $GITHUB_ENV
         echo "Found module file: $MODL_FILE"
 
@@ -59,8 +74,9 @@ jobs:
           Version: ${{ env.VERSION }}
 
           ### Installation
-          1. Download the .modl file below
+          1. Download the signed .modl file below
           2. Install it in Ignition via Config > Modules > Install or Upgrade a Module
+          3. Accept the self-signed certificate if prompted
 
           ### Changes
           See the commit history for details on changes in this release.
